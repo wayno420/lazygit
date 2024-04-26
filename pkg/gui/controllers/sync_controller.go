@@ -90,7 +90,7 @@ func (self *SyncController) push(currentBranch *models.Branch) error {
 	// if we have pullables we'll ask if the user wants to force push
 	if currentBranch.IsTrackingRemote() {
 		opts := pushOpts{}
-		if currentBranch.HasCommitsToPull() {
+		if currentBranch.Pullables2 != "?" && currentBranch.Pullables2 != "0" {
 			return self.requestToForcePush(currentBranch, opts)
 		} else {
 			return self.pushAux(currentBranch, opts)
