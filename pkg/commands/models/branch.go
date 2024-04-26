@@ -13,7 +13,9 @@ type Branch struct {
 	// how many commits ahead we are from the remote branch (how many commits we can push)
 	Pushables string
 	// how many commits behind we are from the remote branch (how many commits we can pull)
-	Pullables string
+	Pullables  string
+	Pushables2 string
+	Pullables2 string
 	// whether the remote branch is 'gone' i.e. we're tracking a remote branch that has been deleted
 	UpstreamGone bool
 	// whether this is the current branch. Exactly one branch should have this be true

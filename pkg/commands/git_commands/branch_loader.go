@@ -183,6 +183,7 @@ var branchFields = []string{
 	"refname:short",
 	"upstream:short",
 	"upstream:track",
+	"push:track",
 	"subject",
 	"objectname",
 	"committerdate:unix",
@@ -194,12 +195,14 @@ func obtainBranch(split []string, storeCommitDateAsRecency bool) *models.Branch 
 	fullName := split[1]
 	upstreamName := split[2]
 	track := split[3]
-	subject := split[4]
-	commitHash := split[5]
-	commitDate := split[6]
+	pushTrack := split[4]
+	subject := split[5]
+	commitHash := split[6]
+	commitDate := split[7]
 
 	name := strings.TrimPrefix(fullName, "heads/")
 	pushables, pullables, gone := parseUpstreamInfo(upstreamName, track)
+	pushables2, pullables2, _ := parseUpstreamInfo(upstreamName, pushTrack)
 
 	recency := ""
 	if storeCommitDateAsRecency {
@@ -213,6 +216,8 @@ func obtainBranch(split []string, storeCommitDateAsRecency bool) *models.Branch 
 		Recency:      recency,
 		Pushables:    pushables,
 		Pullables:    pullables,
+		Pushables2:   pushables2,
+		Pullables2:   pullables2,
 		UpstreamGone: gone,
 		Head:         headMarker == "*",
 		Subject:      subject,

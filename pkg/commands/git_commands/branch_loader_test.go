@@ -25,12 +25,14 @@ func TestObtainBranch(t *testing.T) {
 	scenarios := []scenario{
 		{
 			testName:                 "TrimHeads",
-			input:                    []string{"", "heads/a_branch", "", "", "subject", "123", timeStamp},
+			input:                    []string{"", "heads/a_branch", "", "", "", "subject", "123", timeStamp},
 			storeCommitDateAsRecency: false,
 			expectedBranch: &models.Branch{
 				Name:       "a_branch",
 				Pushables:  "?",
 				Pullables:  "?",
+				Pushables2: "?",
+				Pullables2: "?",
 				Head:       false,
 				Subject:    "subject",
 				CommitHash: "123",
@@ -38,12 +40,14 @@ func TestObtainBranch(t *testing.T) {
 		},
 		{
 			testName:                 "NoUpstream",
-			input:                    []string{"", "a_branch", "", "", "subject", "123", timeStamp},
+			input:                    []string{"", "a_branch", "", "", "", "subject", "123", timeStamp},
 			storeCommitDateAsRecency: false,
 			expectedBranch: &models.Branch{
 				Name:       "a_branch",
 				Pushables:  "?",
 				Pullables:  "?",
+				Pushables2: "?",
+				Pullables2: "?",
 				Head:       false,
 				Subject:    "subject",
 				CommitHash: "123",
@@ -51,12 +55,14 @@ func TestObtainBranch(t *testing.T) {
 		},
 		{
 			testName:                 "IsHead",
-			input:                    []string{"*", "a_branch", "", "", "subject", "123", timeStamp},
+			input:                    []string{"*", "a_branch", "", "", "", "subject", "123", timeStamp},
 			storeCommitDateAsRecency: false,
 			expectedBranch: &models.Branch{
 				Name:       "a_branch",
 				Pushables:  "?",
 				Pullables:  "?",
+				Pushables2: "?",
+				Pullables2: "?",
 				Head:       true,
 				Subject:    "subject",
 				CommitHash: "123",
@@ -64,12 +70,14 @@ func TestObtainBranch(t *testing.T) {
 		},
 		{
 			testName:                 "IsBehindAndAhead",
-			input:                    []string{"", "a_branch", "a_remote/a_branch", "[behind 2, ahead 3]", "subject", "123", timeStamp},
+			input:                    []string{"", "a_branch", "a_remote/a_branch", "[behind 2, ahead 3]", "[behind 2, ahead 3]", "subject", "123", timeStamp},
 			storeCommitDateAsRecency: false,
 			expectedBranch: &models.Branch{
 				Name:       "a_branch",
 				Pushables:  "3",
 				Pullables:  "2",
+				Pushables2: "3",
+				Pullables2: "2",
 				Head:       false,
 				Subject:    "subject",
 				CommitHash: "123",
@@ -77,13 +85,15 @@ func TestObtainBranch(t *testing.T) {
 		},
 		{
 			testName:                 "RemoteBranchIsGone",
-			input:                    []string{"", "a_branch", "a_remote/a_branch", "[gone]", "subject", "123", timeStamp},
+			input:                    []string{"", "a_branch", "a_remote/a_branch", "[gone]", "[gone]", "subject", "123", timeStamp},
 			storeCommitDateAsRecency: false,
 			expectedBranch: &models.Branch{
 				Name:         "a_branch",
 				UpstreamGone: true,
 				Pushables:    "?",
 				Pullables:    "?",
+				Pushables2:   "?",
+				Pullables2:   "?",
 				Head:         false,
 				Subject:      "subject",
 				CommitHash:   "123",
@@ -91,13 +101,15 @@ func TestObtainBranch(t *testing.T) {
 		},
 		{
 			testName:                 "WithCommitDateAsRecency",
-			input:                    []string{"", "a_branch", "", "", "subject", "123", timeStamp},
+			input:                    []string{"", "a_branch", "", "", "", "subject", "123", timeStamp},
 			storeCommitDateAsRecency: true,
 			expectedBranch: &models.Branch{
 				Name:       "a_branch",
 				Recency:    "2h",
 				Pushables:  "?",
 				Pullables:  "?",
+				Pushables2: "?",
+				Pullables2: "?",
 				Head:       false,
 				Subject:    "subject",
 				CommitHash: "123",
