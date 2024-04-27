@@ -16,8 +16,9 @@ type CustomCommandAction struct {
 
 func (self *CustomCommandAction) Call() error {
 	return self.c.Prompt(types.PromptOpts{
-		Title:               self.c.Tr.CustomCommand,
-		FindSuggestionsFunc: self.GetCustomCommandsHistorySuggestionsFunc(),
+		Title:                   self.c.Tr.CustomCommand,
+		FindSuggestionsFunc:     self.GetCustomCommandsHistorySuggestionsFunc(),
+		FillInTextOnTogglePanel: true,
 		HandleConfirm: func(command string) error {
 			if self.shouldSaveCommand(command) {
 				self.c.GetAppState().CustomCommandsHistory = utils.Limit(

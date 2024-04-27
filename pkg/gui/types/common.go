@@ -174,8 +174,9 @@ type CreatePopupPanelOpts struct {
 	HandleClose            func() error
 	HandleDeleteSuggestion func(int) error
 
-	FindSuggestionsFunc func(string) []*Suggestion
-	Mask                bool
+	FindSuggestionsFunc     func(string) []*Suggestion
+	Mask                    bool
+	FillInTextOnTogglePanel bool
 }
 
 type ConfirmOpts struct {
@@ -189,10 +190,11 @@ type ConfirmOpts struct {
 }
 
 type PromptOpts struct {
-	Title               string
-	InitialContent      string
-	FindSuggestionsFunc func(string) []*Suggestion
-	HandleConfirm       func(string) error
+	Title                   string
+	InitialContent          string
+	FindSuggestionsFunc     func(string) []*Suggestion
+	HandleConfirm           func(string) error
+	FillInTextOnTogglePanel bool
 	// CAPTURE THIS
 	HandleClose            func() error
 	HandleDeleteSuggestion func(int) error
