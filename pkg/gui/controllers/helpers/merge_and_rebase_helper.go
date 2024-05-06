@@ -309,20 +309,22 @@ func (self *MergeAndRebaseHelper) RebaseOntoRef(ref string) error {
 			Tooltip:        self.c.Tr.RebaseOntoBaseBranchTooltip,
 			OnPress: func() error {
 				self.c.LogAction(self.c.Tr.Actions.RebaseBranch)
-				baseCommit := self.c.Modes().MarkedBaseCommit.GetHash()
-				var err error
-				if baseCommit != "" {
-					err = self.c.Git().Rebase.RebaseBranchFromBaseCommit(baseBranch, baseCommit)
-				} else {
-					err = self.c.Git().Rebase.RebaseBranch(baseBranch)
-				}
-				if err = self.CheckMergeOrRebase(err); err != nil {
-					return err
-				}
-				if err = self.ResetMarkedBaseCommit(); err != nil {
-					return err
-				}
-				return self.c.PushContext(self.c.Contexts().LocalCommits)
+				return self.c.WithWaitingStatus(self.c.Tr.RebasingStatus, func(task gocui.Task) error {
+					baseCommit := self.c.Modes().MarkedBaseCommit.GetHash()
+					var err error
+					if baseCommit != "" {
+						err = self.c.Git().Rebase.RebaseBranchFromBaseCommit(baseBranch, baseCommit)
+					} else {
+						err = self.c.Git().Rebase.RebaseBranch(baseBranch)
+					}
+					if err = self.CheckMergeOrRebase(err); err != nil {
+						return err
+					}
+					if err = self.ResetMarkedBaseCommit(); err != nil {
+						return err
+					}
+					return self.c.PushContext(self.c.Contexts().LocalCommits)
+				})
 			},
 		},
 	}
